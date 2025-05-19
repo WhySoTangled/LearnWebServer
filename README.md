@@ -9,3 +9,9 @@ a record about learn how to build a webserver by C++ of mine
 
 - [ ] 配置MySQL
 - [ ] 开始项目
+
+
+
+## 参考
+
++ [Using the MySQL APT Repository](https://dev.mysql.com/doc/refman/8.4/en/linux-installation-apt-repo.html)（MySQL官方文档）
