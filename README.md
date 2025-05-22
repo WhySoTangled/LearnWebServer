@@ -68,7 +68,7 @@ Your MySQL connection id is 9
 Server version: 8.0.42-0ubuntu0.22.04.1 (Ubuntu)
 ```
 
-​    下一步是要配置远程访问的问题，还没搞定……
+​    可以远程fang'wen
 
 ## 进度和Todo-list：
 
