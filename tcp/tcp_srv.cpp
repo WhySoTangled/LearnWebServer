@@ -1,5 +1,5 @@
 /***********
- * a simple example of TCP server
+ * @file a simple example of TCP server
  *************/
 #include <iostream>
 #include <cstring>
