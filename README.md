@@ -6,7 +6,22 @@ a record about learn how to build a webserver by C++ of mine
 ## 项目流程
 
 + [wsl安装MySQL](https://blog.csdn.net/weixin_43796621/article/details/148100973)
-+ 
+
+
+
+【Linux系统编程】I/O多路复用
+
+传统IO：Input把文件读入内存，output从内存写入文件
+
+BIO：Blocking IO 阻塞等待；
+
+​    同一时刻只能处理一个操作，效率低；可以用多进程、多线程解决，但是效率低
+
+NIO Nonblocking IO非阻塞、忙碌轮询；
+
+​    非阻塞，轮询提高了程序的执行效率，需要占用更多的CPU和系统资源
+
+
 
 ## 进度和Todo-list：
 
@@ -18,6 +33,7 @@ a record about learn how to build a webserver by C++ of mine
 
 - [ ] 开始项目
   - [x] 线性阅读代码，拷贝，到LOG了
+  - [ ] 阅读locker.h，了解了封装信号类和互斥锁类
 
 
 
