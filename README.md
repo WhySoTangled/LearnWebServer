@@ -37,6 +37,46 @@ NIO Nonblocking IO非阻塞、忙碌轮询；
 
 
 
+```c++
+/// 线程控制
+Linux POSIX -lpthread
+#include <pthread.h>
+	pthread_create()//创建线程 success : 0 errno
+    gitpid()// 获取进程id
+    pthread_self()//线程id
+//终止线程
+    pthread_cancel();
+	pthread_exit();
+
+	//调用该函数的线程将挂起等待，直到id为thread的线程终止
+	pthread_join(pthread_t thread, void **value_ptr);
+```
+
+
+
+```c++
+/// 线程间同步
+#include <pthread.h>
+/// mutex
+
+	// 互斥锁（Mutex，Mutual Exclusive Lock）
+	int pthread_mutex_destroy(pthread_mutex_t *mutex);
+	int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);
+	pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;// 静态分配
+
+	// 加锁 解锁
+	int pthread_mutex_lock(pthread_mutex_t *mutex);
+	int pthread_mutex_trylock(pthread_mutex_t *mutex);
+	int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+/// Condition Variable
+	int pthread_cond_destroy(pthread_cond_t *cond);
+	int pthread_cond_init(pthread_cond_t *restrict cond, const pthread_condattr_t *restrict attr);
+	pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+```
+
+
+
 
 ## 参考
 

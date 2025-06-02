@@ -47,10 +47,10 @@ void WebServer::init(int port, string user, string passWord, string databaseName
 void WebServer::log_write() {
     if (m_close_log == 0)
     {
-        //初始化日志
-        // if (m_log_write == 1)
-        //     Log::get_instance()->init("./ServerLog", m_close_log, 2000, 800000, 800);
-        // else
-        //     Log::get_instance()->init("./ServerLog", m_close_log, 2000, 800000, 0);
+        // 初始化日志
+        if (m_log_write == 1)
+            Log::get_instance()->init("./ServerLog", m_close_log, 2000, 800000, 800);
+        else
+            Log::get_instance()->init("./ServerLog", m_close_log, 2000, 800000, 0);
     }
 }
