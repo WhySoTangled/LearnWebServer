@@ -1,4 +1,5 @@
 /// @brief 生产者消费者简单实现
+/// @details test for condition variable usage in C++
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -19,6 +20,8 @@ void *consumer(void *p)
  
     for (;;) {
         pthread_mutex_lock(&lock);
+        // 唤醒后再次使用while循环检查条件，避免在多个消费者的竞争中失败
+        // POSIX的虚假唤醒是什么鬼???
         while (head == NULL)
             // 1. 释放mutex
             // 2. 阻塞等待条件变量has_product
