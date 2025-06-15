@@ -24,5 +24,8 @@ t_semaphore1 : ./test/t_semaphore1.cpp
 t_mysql1 : ./test/t_mysql1.cpp
 	$(CXX) -o t_mysql1  $^ $(CXXFLAGS) -lmysqlclient
 
+valint-nc : ./test/valint-nc.cpp
+	$(CXX) -o valint-nc  $^ $(CXXFLAGS) 
+
 clean:
-	rm -f t_mutex1 t_mutex2 t_cond1 t_semaphore1 t_mysql1
+	rm -f t_mutex1 t_mutex2 t_cond1 t_semaphore1 t_mysql1 valint-nc
