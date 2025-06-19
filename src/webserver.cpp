@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 #include "webserver.h"
+#include "log/log.h"
 
 
 //Constructor
