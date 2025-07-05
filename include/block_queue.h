@@ -2,7 +2,7 @@
 #define BLOCKK_QUEUE_H
 
 #include <iostream>
-#include "../lock/locker.h"
+#include "locker.h"
 
 template <class T>
 class block_queue {

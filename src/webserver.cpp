@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 #include "webserver.h"
-#include "log/log.h"
+#include "log.h"
 
 
 //Constructor
@@ -45,6 +45,9 @@ void WebServer::init(int port, string user, string passWord, string databaseName
     m_actormodel = actor_model;
 }
 
+/*********
+ * @brief 日志相关，类Log
+*/
 void WebServer::log_write() {
     if (m_close_log == 0)
     {
@@ -54,4 +57,13 @@ void WebServer::log_write() {
         else
             Log::get_instance()->init("./ServerLog", m_close_log, 2000, 800000, 0);
     }
+}
+
+void WebServer::sql_pool() {
+     //初始化数据库连接池
+    m_connPool = connection_pool::GetInstance();
+    m_connPool->init("localhost", m_user, m_passWord, m_databaseName, 3306, m_sql_num, m_close_log);
+
+    //初始化数据库读取表
+    users->initmysql_result(m_connPool);
 }

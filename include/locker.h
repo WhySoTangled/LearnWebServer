@@ -17,7 +17,7 @@ public:
 
     // 禁止拷贝构造函数
     sem(const sem&) = delete;
-    sem& operator=(const sem&) = delete;
+    // sem& operator=(const sem&) = delete;
     
     bool wait();
     bool post();

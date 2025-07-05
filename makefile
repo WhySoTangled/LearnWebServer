@@ -8,6 +8,9 @@ else
 
 endif
 
+INCLUDES = -I./include    # 添加多个路径，空格分隔
+CFLAGS = -Wall $(INCLUDES)         # 将路径整合到编译选项
+
 t_mutex1 : ./test/t_mutex1.cpp
 	$(CXX) -o t_mutex1  $^ $(CXXFLAGS) -lpthread
 

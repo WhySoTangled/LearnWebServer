@@ -1,8 +1,9 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 #include <string>
-#include "./http/http_conn.h"
-#include "./timer/lst_timer.h"
+#include "http_conn.h"
+#include "lst_timer.h"
+#include "sql_connection_pool.h"
 
 using std::string;
 
@@ -20,6 +21,7 @@ public:
               int thread_num, int close_log, int actor_model);
 
     void log_write();
+    void sql_pool();
 private:
     
     int m_port;         //端口号
@@ -28,6 +30,8 @@ private:
     int m_close_log;    //是否关闭日志
     int m_actormodel;   //并发模型选择
 
+    // 数据库 MySQL
+    connection_pool *m_connPool;
     string m_user;         //登陆数据库用户名
     string m_passWord;     //登陆数据库密码
     string m_databaseName; //使用数据库名

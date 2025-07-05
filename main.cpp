@@ -16,6 +16,10 @@ int main(int argc, char* argv[]) {
                 config.OPT_LINGER, config.TRIGMode,  config.sql_num,  config.thread_num, 
                 config.close_log, config.actor_model);
 
+    // 日志
     server.log_write();
     // TODO: 归纳合并文件树，完成webserver
+
+    //数据库
+    server.sql_pool();
 }
