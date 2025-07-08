@@ -1,3 +1,4 @@
+#include <string>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -12,7 +13,8 @@
 #include <sys/epoll.h>
 #include <pthread.h>
 
-#define BUFFER_SIZE 4096
+
+
 /// @brief 状态机的三种可能状态
 enum class CHECK_STATE { 
     CHECK_STATE_REQUESTLINE = 0,    // 当前正在分析请求行
@@ -49,6 +51,12 @@ class ChttpConn {
 public:
     ChttpConn(){}
     ~ChttpConn(){}
+    bool read();
+    void init(int sockfd, const sockaddr_in &addr, char *, int, int, std::string user, std::string passwd, std::string sqlname);
+public:
+    static const int FILENAME_LEN = 200;
+    static const int READ_BUFFER_SIZE = 2048;   // 读缓冲区大小
+    static const int WRITE_BUFFER_SIZE = 1024;  // 写缓冲区大小
 private:
     void init( int sockfd, const sockaddr_in &address, int trigMode );
 
@@ -58,8 +66,13 @@ private:
     int m_sockfd; // connfd
     sockaddr_in m_address; // address of the client
     int m_triggerMode; // 触发模式LT/ET
+
+    char m_read_buf[READ_BUFFER_SIZE]; // 读缓冲区
+    int m_read_idx; // 当前读缓冲区中数据的最后一个字节
+    int m_checked_idx; // 当前正在分析的字符在读缓冲区中的位置
 public:
     static int m_epollfd; // epoll的文件描述符
+    static int m_user_count; // 当前连接的用户数,该对象创建的实例个数，随创建和删除增减
 
 
 };
@@ -129,4 +142,39 @@ void ChttpConn::init( int sockfd, const sockaddr_in &address, int trigMode ) {
     m_sockfd = sockfd;
     m_address = address;
     m_triggerMode = trigMode;
+}
+
+/// @brief epollin事件, 有数据可读, 照 LT/ET 模式读数据
+/// @return true: 读成功，false: 读失败
+/// @note LT模式下，读一次数据，ET模式下循环读数据直到没有
+bool ChttpConn::read() {
+    if ( m_read_idx >= READ_BUFFER_SIZE ) { // 读缓冲区满
+        return false; 
+    }
+    int ret = 0;
+    if ( m_triggerMode == 0 ) { // LT模式读一次
+        ret = recv( m_sockfd, m_read_buf + m_read_idx, READ_BUFFER_SIZE - m_read_idx, 0 );
+
+        // ret == 0 表示对方关闭连接 \
+           ret < 0 表示出错
+        if ( ret <= 0 ) {
+            return false;
+        }
+        m_read_idx += ret;
+        return true;
+    } else if ( m_triggerMode == 1 ) { // ET模式循环读全部
+        while ( true ) {
+            ret = recv( m_sockfd, m_read_buf + m_read_idx, READ_BUFFER_SIZE - m_read_idx, 0 );
+            if (ret == -1) {
+                // 对于非阻塞IO，下面的条件成立表示数据已经全部读取完毕，此后，epoll就能再次触发sockfd上的EPOLLIN事件，以驱动下一次读操作
+                if ( errno == EAGAIN || errno == EWOULDBLOCK )
+                    break;
+                return false;
+            }
+            else if (ret == 0) {
+                return false;
+            }
+            m_read_idx += ret;
+        }
+    }
 }

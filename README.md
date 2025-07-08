@@ -78,6 +78,31 @@ Linux POSIX -lpthread
 
 
 
+epoll对文件描述符的操作模式
+
+```c++
+// 对新连接的处理( fd == sockfd )的处理是LT还是ET
+CwebServer::m_listen_trig_mode
+// 对socket的读缓冲区的读取是LT还是ET
+CwebServer::m_conn_trig_mode
+// 上面两个模式的合并，即 00，01，10，11
+CwebServer::m_trig_mode
+```
+
+实例运行时选择的模式：LT/ET，reactor/proactor都只是在构造或者调用init赋了值，具体到业务逻辑时才会对几个变量进行判断选择分支
+
+整个程序不同类的所有实例共享同一个epoll文件描述符epollfd，虽然在每个类中可能名字不一样
+
+跳过了信号相关的部分，sigaction，alarm之类的
+
+数据库的接驳相关逻辑仍是空白，未曾实现
+
+
+
+
+
+
+
 
 ## 参考
 
