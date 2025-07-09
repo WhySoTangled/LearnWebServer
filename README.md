@@ -87,15 +87,51 @@ CwebServer::m_listen_trig_mode
 CwebServer::m_conn_trig_mode
 // 上面两个模式的合并，即 00，01，10，11
 CwebServer::m_trig_mode
+// http连接的epoll模式
+ChttpConn::m_triggerMode
+   
+// 根据CwebServer::m_conn_trig_mode决定怎么读缓冲区
+bool ChttpConn::read();
 ```
 
 实例运行时选择的模式：LT/ET，reactor/proactor都只是在构造或者调用init赋了值，具体到业务逻辑时才会对几个变量进行判断选择分支
 
+```c++
+CwebServer::    int m_actor_model; // 0: proactor, 1: reactor
+```
+
 整个程序不同类的所有实例共享同一个epoll文件描述符epollfd，虽然在每个类中可能名字不一样
+
+```c++
+int 		CwebServer::m_epollfd;
+static int 	Cutils::m_epollfd;
+static int 	ChttpConn::m_epollfd;
+```
+
+服务器的事件处理模式相关
+
+```c++
+// 0 : Practor 1 : Reactor
+int CwebServer::m_actor_model;
+```
+
+
 
 跳过了信号相关的部分，sigaction，alarm之类的
 
 数据库的接驳相关逻辑仍是空白，未曾实现
+
+
+
+append_p和append有什么区别？reactor模式和proactor的不同，这里选择另一种方式实现
+
+通用线程池的task packged封装的实现
+
+选择llfc的泛用线程池，将任务封装后通过commit加入队伍执行，暂时将任务设为实例中的私有方法，后续运行时看看可不可行吧，如果不行的话需要改成共有
+
+准备跳过http的处理，读通复制粘贴吧
+
+
 
 
 

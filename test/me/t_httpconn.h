@@ -53,13 +53,15 @@ public:
     ~ChttpConn(){}
     bool read();
     void init(int sockfd, const sockaddr_in &addr, char *, int, int, std::string user, std::string passwd, std::string sqlname);
-public:
+    sockaddr_in *get_address();
+    void process();
+
+    public:
     static const int FILENAME_LEN = 200;
     static const int READ_BUFFER_SIZE = 2048;   // 读缓冲区大小
     static const int WRITE_BUFFER_SIZE = 1024;  // 写缓冲区大小
 private:
     void init( int sockfd, const sockaddr_in &address, int trigMode );
-
 
 
 private:
@@ -177,4 +179,14 @@ bool ChttpConn::read() {
             m_read_idx += ret;
         }
     }
+}
+
+sockaddr_in *ChttpConn::get_address() { 
+    return &m_address; 
+}
+
+/// @brief 处理HTTP请求。被线程池工作线程调用
+/// TODO: 未实现
+void ChttpConn::process() {
+
 }

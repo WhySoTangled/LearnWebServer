@@ -272,19 +272,21 @@ void Cutils::addsig( int sig, void(handler)(int), bool restart )
     assert( sigaction(sig, &sa, NULL) != -1 );
 }
 
-//定时处理任务，重新定时以不断触发SIGALRM信号
+///@brief 定时处理任务，重新定时以不断触发SIGALRM信号
 void Cutils::timerHandler()
 {
     m_timer_lst.tick();
     alarm( m_time_slot );
 }
 
+/// @brief 向客户端发送错误信息并关闭连接
 void Cutils::showError( int connfd, const char *info )
 {
     send( connfd, info, strlen(info), 0 );
     close( connfd );
 }
 
+/// @brief 删除epollfd上connfd的sockfd的注册事件
 void cb_func(client_data *user_data)
 {
     epoll_ctl( Cutils::m_epollfd, EPOLL_CTL_DEL, user_data->sockfd, 0 );
